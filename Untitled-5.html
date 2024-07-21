@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>Fare Calculator for [Grab Service Fee Booking]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap');
+        body {
+            font-family: 'Noto Sans Thai', sans-serif;
+        }
+        .container {
+            display: flex;
+        }
+        .input-section, .output-section {
+            padding: 20px;
+            border: 1px solid black;
+        }
+        .input-section {
+            width: 50%;
+        }
+        .output-section {
+            width: 50%;
+            border-left: none;
+        }
+        input[type="number"] {
+            background-color: hwb(208 87% 1%);
+            border: 2px solid #ccc;
+            padding: 5px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        hr {
+            margin: 20px 0;
+        }
+        .note {
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        .highlight {
+            font-weight: bold;
+            background-color: hwb(152 7% 14%);
+        }
+    </style>
+    <script>
+        function calculateFare() {
+            let a1 = parseFloat(document.getElementById('a1').value) || 0;
+            let a2 = parseFloat(document.getElementById('a2').value) || 0;
+            let a3 = parseFloat(document.getElementById('a3').value) || 0;
+            let a4 = parseFloat(document.getElementById('a4').value) || 0;
+            let b1 = parseFloat(document.getElementById('b1').value) || 0;
+
+            let c1 = a1 / (a2 + a3);
+            let c2 = c1 * (a2 + a4);
+            let c3 = c2 - a1;
+            let c4 = b1 / (a2 + a3);
+            let c5 = (c4 * (a2 + a4)) - b1;
+            let c6 = c4 * (a2 + a4);
+            let d1 = b1 - a1;
+            let d2 = c6 - c2;
+            let d3 = d1 - d2;
+            let e1 = c3 + d3;
+            let e2 = b1 - c6;
+
+            document.getElementById('c1').innerText = c1.toFixed(2);
+            document.getElementById('c2').innerText = c2.toFixed(2);
+            document.getElementById('c3').innerText = c3.toFixed(2);
+            document.getElementById('c4').innerText = c4.toFixed(2);
+            document.getElementById('c5').innerText = c5.toFixed(2);
+            document.getElementById('c6').innerText = c6.toFixed(2);
+            document.getElementById('d1').innerText = d1.toFixed(2);
+            document.getElementById('d2').innerText = d2.toFixed(2);
+            document.getElementById('d3').innerText = d3.toFixed(2);
+            document.getElementById('e1').innerText = e1.toFixed(2);
+            document.getElementById('e2').innerText = e2.toFixed(2);
+        }
+
+        document.addEventListener("input", calculateFare);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="input-section">
+            <h2 style="margin: 0;">Fare Calculator for [Grab Service Fee Booking]</h2> 
+            <h3 style="margin: 0;">GCS - TH Payment Operation Digital Team</h3> 
+            <p style="margin: 0;">[Singha Project] Made with 💚 by thanapat.bo 🌙<p>
+            <h3>กรอกข้อมูลตามนี้ครับ 🧑‍💻👩‍💻</h3>
+            <h3>DAX</h3>
+            <label for="a1">1️⃣ DAX Trip Fare (Phoenix >> Driver Earnings >> Trip fare) (THB):</label>
+            <input type="number" id="a1" step="0.01">
+            <label for="a2">2️⃣ Boardcated to Distance (KM):</label>
+            <input type="number" id="a2" step="0.01">
+            <label for="a3">3️⃣ ระยะทางเก่า (KM):</label>
+            <input type="number" id="a3" step="0.01">
+            <label for="a4">4️⃣ ระยะทางใหม่ (KM):</label>
+            <input type="number" id="a4" step="0.01">
+            <h3>PAX</h3>
+            <label for="b1">1️⃣ PAX Fare (กรอก Meter Fare-Platform Fee) (THB):</label>
+            <input type="number" id="b1" step="0.01">
+        </div>
+        <div class="output-section">
+            <h2>ดึงเงิน/คืนเงินตามนี้ครับ 😎</h2>
+            <p>DAX Fare/KM (THB): <span id="c1">0.00</span></p>
+            <p>Different Fare (THB): <span id="c2">0.00</span></p>
+            <p>DAX Fare (NEW) (THB): <span id="c3">0.00</span></p>
+            <p>PAX Fare/KM (THB): <span id="c4">0.00</span></p>
+            <p>PAX Different Fare (THB): <span id="c5">0.00</span></p>
+            <p>PAX Fare (NEW) (THB): <span id="c6">0.00</span></p>
+            <p>DAX Commission (Old) (THB): <span id="d1">0.00</span></p>
+            <p>DAX Commission (NEW) (THB): <span id="d2">0.00</span></p>
+            <p>DAX Different Commission (THB): <span id="d3">0.00</span></p>
+            <p>Clawback DAX (THB): <span id="e1">0.00</span></p>
+            <p>Refund PAX (THB): <span id="e2">0.00</span></p>
+        </div>
+    </div>
+    <hr>
+    <div class="note">
+        <p>หมายเหตุ</p>
+        <ol>
+            <li>สำหรับใช้คำนวณราคาค่าโดยสารส่วนต่างในกรณีเปลี่ยนจุดหมาย/ลงกลางทาง หรือ Multi-stop Rides ที่สาเหตุเกิดจากคนขับและเข้าเงื่อนไขเท่านั้น</li>
+        </ol>
+    </div>
+    <div style="text-align: right; font-size: 12px;">
+        <p style="margin: 0;"><em>Copyright &copy; 2024 Thanapat Boonchum All rights reserved</em></p>
+        <p style="margin: 0;"><em>[G] Grab Support Professional - SME</em></p>
+        <p style="margin: 0;"><em>GrabTaxi Thailand Co. Ltd.</em></p>
+    </div>
+</body>
+</html>

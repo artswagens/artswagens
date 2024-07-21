@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>PayOps GrabRent Fare Calculator 2024</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap');
+        body {
+            font-family: 'Noto Sans Thai', sans-serif;
+        }
+        .container {
+            display: flex;
+        }
+        .input-section, .output-section {
+            padding: 20px;
+            border: 1px solid black;
+        }
+        .input-section {
+            width: 50%;
+        }
+        .output-section {
+            width: 50%;
+            border-left: none;
+        }
+        hr {
+            margin: 20px 0;
+        }
+        .note {
+            margin-top: 20px;
+        }
+        .highlight {
+            font-weight: bold;
+            background-color: yellow;
+        }
+    </style>
+    <script>
+        function calculateFare() {
+            let tripFare = parseFloat(document.getElementById('trip-fare').value);
+            let boardedDistance = parseFloat(document.getElementById('boarded-distance').value);
+            let oldDistance = parseFloat(document.getElementById('old-distance').value);
+            let newDistance = parseFloat(document.getElementById('new-distance').value);
+
+            let paxFare = parseFloat(document.getElementById('pax-fare').value);
+            let platformFee = parseFloat(document.getElementById('platform-fee').value);
+            let rideCover = parseFloat(document.getElementById('ride-cover').value);
+            let carbonFee = parseFloat(document.getElementById('carbon-fee').value);
+            let foreignPaymentFee = parseFloat(document.getElementById('foreign-payment-fee').value);
+            let tollFee = parseFloat(document.getElementById('toll-fee').value);
+
+            let perKmDax = tripFare / (boardedDistance + oldDistance);
+            let newFareDax = perKmDax * (boardedDistance + oldDistance);
+            let perKmPax = paxFare / (boardedDistance + oldDistance);
+            let newFarePax = perKmPax * (newDistance + boardedDistance);
+            let refundPax = paxFare - newFarePax - foreignPaymentFee;
+            let clawbackDax = tripFare - newFareDax;
+            let tollFeeWithForeign = tollFee + (tollFee * 0.03);
+
+            document.getElementById('per-km-dax').innerText = perKmDax.toFixed(2);
+            document.getElementById('new-fare-dax').innerText = newFareDax.toFixed(2);
+            document.getElementById('per-km-pax').innerText = perKmPax.toFixed(2);
+            document.getElementById('new-fare-pax').innerText = newFarePax.toFixed(2);
+            document.getElementById('refund-pax').innerText = refundPax.toFixed(2);
+            document.getElementById('clawback-dax').innerText = clawbackDax.toFixed(2);
+            document.getElementById('toll-fee-with-foreign').innerText = (Math.round(tollFeeWithForeign * 2) / 2).toFixed(2);
+        }
+
+        document.addEventListener("input", calculateFare);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="input-section">
+            <h2>คำนวณค่าโดยสาร GrabRent (PayOps GrabRent Fare Calculator 2024)</h2>
+            <p>Powered by GrabGPT with thanapat.bo</p>
+            <h3>DAX Part</h3>
+            <label for="trip-fare">Trip fare (THB):</label>
+            <input type="number" id="trip-fare" step="0.01">
+            <br>
+            <label for="boarded-distance">Boarded to Distance (Kilometers):</label>
+            <input type="number" id="boarded-distance" step="0.01">
+            <br>
+            <label for="old-distance">Old Distance (Kilometers):</label>
+            <input type="number" id="old-distance" step="0.01">
+            <br>
+            <label for="new-distance">New Distance (Kilometers):</label>
+            <input type="number" id="new-distance" step="0.01">
+            <br>
+
+            <h3>PAX Part</h3>
+            <label for="pax-fare">PAX Fare (THB):</label>
+            <input type="number" id="pax-fare" step="0.01">
+            <br>
+            <label for="platform-fee">Platform Fee (THB):</label>
+            <input type="number" id="platform-fee" step="0.01">
+            <br>
+            <label for="ride-cover">Ride Cover (THB):</label>
+            <input type="number" id="ride-cover" step="0.01">
+            <br>
+            <label for="carbon-fee">Carbon Fee (THB):</label>
+            <input type="number" id="carbon-fee" step="0.01">
+            <br>
+            <label for="foreign-payment-fee">Foreign Payment Fee (THB):</label>
+            <input type="number" id="foreign-payment-fee" step="0.01">
+            <br>
+            <label for="toll-fee">Toll Fee/Others Fee (THB):</label>
+            <input type="number" id="toll-fee" step="0.01">
+        </div>
+        <div class="output-section">
+            <h2>ผลลัพธ์</h2>
+            <p>Per KM (DAX): <span id="per-km-dax">0</span> THB</p>
+            <p>ราคาใหม่ที่ DAX ต้องได้: <span id="new-fare-dax">0</span> THB</p>
+            <p>Per KM (PAX): <span id="per-km-pax">0</span> THB</p>
+            <p>ราคาใหม่ที่ Pax ต้องจ่าย: <span id="new-fare-pax">0</span> THB</p>
+            <p class="highlight">Refund PAX: <span id="refund-pax">0</span> THB</p>
+            <p class="highlight">Clawback DAX: <span id="clawback-dax">0</span> THB</p>
+            <p>Toll Fee/Others Fee with Foreign Payment Fee: <span id="toll-fee-with-foreign">0</span> THB</p>
+        </div>
+    </div>
+    <hr>
+    <div class="note">
+        <p>หมายเหตุ</p>
+        <ol>
+            <li>สำหรับใช้คำนวณเพื่อเทียบเคียงค่ามิเตอร์ในกรณีที่คนขับไม่เปิดมิเตอร์ในการเดินทางเท่านั้น</li>
+        </ol>
+    </div>
+    <div style="text-align: right;">
+        <p><em>Copyright &copy; 2024 Thanapat Boonchum (GCS-TH-BKK-IH-PayOps) All right reserved</em></p>
+    </div>
+</body>
+</html>
